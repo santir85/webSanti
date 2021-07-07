@@ -1,0 +1,64 @@
+{% extends "blog/layout.html" %}
+{% block content %}
+
+<h2 style="text-align:center;">Articulos</h2>
+    {% if seccion_seleccionada %}
+        <div role="alert"style="text-align:center;">{{ seccion_seleccionada }}</div>
+    {% else %}
+        <div role="alert"style="text-align:center;" >Todos los Articulos</div>
+    {% endif %}
+ <div class="container">
+   <div class="row">
+        {% for un_articulo in lista_articulos %}  
+   <div class="col-md-4 ">
+                   
+            
+            <div class="card" style="width: 100%; margin: 5px 5px;" >
+                <img src="{{un_articulo.imagen.url}}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                   
+                                     <h5 class="card-title">{{un_articulo.titulo}}</h5>
+                                     
+                                          <a  class="btn btn-primary" href="{% url 'inicio:articulo' un_articulo.id %}">Ver {{un_articulo.id}}</a>             
+        
+                
+             
+                                         {% if perms.sitio.change_articulo %}
+                                        <a class="btn btn-primary" href="{% url 'inicio:articulo_editar' un_articulo.id %}">Modificar</a>
+                                        {% endif %}
+                                        {% if perms.sitio.delete_articulo %} 
+                                        <a class="btn btn-primary" href="{% url 'inicio:articulo_eliminar' un_articulo.id %}">Eliminar</a>  
+                                        {% endif %}
+                                        --- {{un_articulo}}
+
+                                        <h5 class="card-title">{{un_articulo.precio}}</h5>
+
+                                        {% if user.is_authenticated %}
+                                                {% if user.is_staff %} 
+                                                               {%else %}
+                                                          <a role="button" class="btn btn-outline-warning" href="{% url 'inicio:agregar_producto' un_articulo.id %} ">agregar</a>
+                                                                 {%endif%}
+                                                {%endif%} 
+                                    </div>
+             </div>              
+            </div>                                         
+        {% empty %}
+            <li>No hay articulos en ésta Sección.</li>
+        {% endfor %}
+    </div>
+</div>
+   
+    
+    
+    {% if perms.sitio.add_articulo %}
+   
+    <h3>Leer mas tarde</h3>
+    <ul>
+        {% for articulo in leer_mas_tarde %}
+            <li>{{articulo}}</li>
+        {% empty %}
+            <li>No hay articulos para leer mas tarde.</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endblock %}

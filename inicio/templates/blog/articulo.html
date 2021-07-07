@@ -1,0 +1,53 @@
+{% extends "blog/layout.html" %}
+{% block content %}
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+          <h2>{{ articulo.titulo }}</h2>
+      <div class="alert alert-info" role="alert">{{ articulo.seccion }}</div>
+              <p><span class="publicacion_fecha" >{{ articulo.fecha_publicacion }}</span></p>
+
+      {% for un_articulo in lista_articulos %}  
+                         <div>             
+                          {% if user.is_authenticated %}
+                          {% if user.is_staff %} 
+                                         {%else %}
+                                    <a role="button" class="btn btn-outline-warning" href="{% url 'inicio:agregar_producto' un_articulo.id %} ">agregar</a>
+                                           {%endif%}
+                          {%endif%} 
+                              
+                              {% if perms.sitio.change_articulo %}
+                                           <a class="btn btn-primary" href="{% url 'inicio:articulo_editar' un_articulo.id %}">Modificar</a>
+                              {% endif %}
+                                           {% if perms.sitio.delete_articulo %} 
+                                           <a class="btn btn-primary" href="{% url 'inicio:articulo_eliminar' un_articulo.id %}">Eliminar</a>  
+                                           {% endif %}
+                                 
+                                      
+                           </div>
+       
+                          
+                          
+                                                                            
+       {% endfor %}
+<a href="{% url 'inicio:leer_mas_tarde' articulo.id %}">Leer Mas Tarde</a>
+<p><img src="{{ media_url  }}{{ articulo.imagen.url }}" alt="{{ articulo.imagen.name }}" /></p>
+<h3>Contenido:</h3>
+<p id="contenido">{{ articulo.contenido |safe }}</p>
+<p>Precio: <span >{{ articulo.precio }}</span></p>
+  <p>Publicado por <span >{{ articulo.publicador }}</span></p>
+  
+<!-- {% if user.is_authenticated %}
+    
+  
+  {% if user.is_staff %} 
+          {%else %}
+             <a role="button" class="btn btn-outline-warning" href="{% url 'carro:agregar' producto.id % } ">agregar</a>
+          {%endif%}
+{%endif%} -->
+
+  <br>           
+<a href="{% url 'inicio:index'%}">Volver</a>
+
+</div>
+</div>
+{% endblock %}

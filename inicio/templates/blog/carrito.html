@@ -1,0 +1,75 @@
+{% extends "blog/layout.html" %}
+{% block content %}
+
+
+
+
+
+{{importe_total}}
+
+
+<table class="table">
+    <thead>
+      <tr>
+        <th>Articulo</th>
+        <th>contenido</th>
+        <th>cantidad</th>
+        <th>precio</th>
+        <th>agregar/quitar</th>
+        <th>eliminar Articulo</th>
+        <th>Vaciar Carrito</th>
+
+
+
+      </tr>
+    </thead>
+    <tbody>
+        {% if request.session.carro.items %}
+        {% for key, value in request.session.carro.items %}
+            <tr>
+                <td>{{value.titulo}}</td>
+                <td>{{value.contenido}}</td>
+               
+                <td>{{value.cantidad}}</td>
+                <td>{{value.precio}}</td>
+                <td>
+                <a href="{%url 'inicio:agregar_producto' value.producto_id%}" class="btn btn-sm btn-success">+</a>
+                <a href="{%url 'inicio:restar_producto' value.producto_id%}" class="btn btn-sm btn-success">-</a>
+                 </td>
+                 
+                 <td>
+                     <a href="{%url 'inicio:eliminar_producto' value.producto_id%}" class="btn btn-sm btn-success">-</a>
+                     </td>
+                     <td>
+                        <a href="{%url 'inicio:limpiar_carro'%}" class="btn btn-sm btn-success">-</a>
+                        </td>
+            </tr>
+        {% endfor%}
+    {% else %}
+        <tr>
+            <td colspan="3">
+                <div class="alert alert danger text-center">
+                    sin productos
+
+                </div>
+
+
+            </td>
+
+        </tr>
+    {%endif%}
+
+      
+    </tbody>
+  </table>
+
+
+  <p>total: {{importe_total}} </p>
+
+
+  <a href="{%url 'inicio:index'%}" class="btn btn-sm btn-success">Seguir comprando
+  </a>
+
+ 
+
+{% endblock %}
